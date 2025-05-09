@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-6">
+            <h1 class="text-3xl font-bold text-center mb-6">Weather App</h1>
+            
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="coordinates">
+                    Enter Coordinates
+                </label>
+                <div class="flex space-x-2">
+                    <input type="text" id="latitude" placeholder="Latitude" 
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <input type="text" id="longitude" placeholder="Longitude" 
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+            </div>
+
+            <button onclick="getWeather()" 
+                    class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Get Weather
+            </button>
+
+            <div id="weather-result" class="mt-6 hidden">
+                <div class="text-center">
+                    <h2 id="city" class="text-2xl font-bold mb-2"></h2>
+                    <div id="temperature" class="text-4xl font-bold mb-2"></div>
+                    <div id="description" class="text-xl text-gray-600"></div>
+                </div>
+            </div>
+
+            <div id="error" class="mt-4 text-red-500 text-center hidden"></div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html> 
