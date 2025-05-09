@@ -43,8 +43,6 @@ func getEnv(key, defaultValue string) string {
 }
 
 func getWeatherFromAPI(lat, lon string) (*WeatherResponse, error) {
-	// In a real application, you would call a weather API here
-	// For this example, we'll return mock data
 	return &WeatherResponse{
 		Temperature: 20.5,
 		Description: "Sunny",
@@ -55,13 +53,10 @@ func getWeatherFromAPI(lat, lon string) (*WeatherResponse, error) {
 func getWeather(c *gin.Context) {
 	lat := c.Query("lat")
 	lon := c.Query("lon")
-
 	if lat == "" || lon == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing coordinates"})
 		return
 	}
-
-	// Try to get from cache first
 	cacheKey := fmt.Sprintf("weather:%s:%s", lat, lon)
 	cachedWeather, err := redisClient.Get(c, cacheKey).Result()
 	if err == nil {
@@ -71,15 +66,11 @@ func getWeather(c *gin.Context) {
 			return
 		}
 	}
-
-	// If not in cache, get from API
 	weather, err := getWeatherFromAPI(lat, lon)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get weather data"})
 		return
 	}
-
-	// Cache the result for 1 hour
 	weatherJSON, _ := json.Marshal(weather)
 	redisClient.Set(c, cacheKey, weatherJSON, time.Hour)
 
@@ -88,8 +79,6 @@ func getWeather(c *gin.Context) {
 
 func main() {
 	r := gin.Default()
-
-	// Enable CORS
 	r.Use(func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
@@ -102,6 +91,5 @@ func main() {
 	})
 
 	r.GET("/weather", getWeather)
-
 	log.Fatal(r.Run(":8080"))
 }
